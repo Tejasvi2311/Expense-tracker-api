@@ -91,7 +91,7 @@ if os.getenv("GITHUB_WORKFLOW"):
         }
     }
 else:
-    # Your local MySQL settings from .env
+    # local MySQL settings from .env
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',

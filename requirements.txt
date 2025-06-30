@@ -4,6 +4,7 @@ djangorestframework
 djangorestframework-simplejwt>=4.0.0
 django-filter
 pillow
-
+black
+flake8
 
 
