@@ -5,6 +5,7 @@ function AuthForm({ onLogin }) {
   const [form, setForm] = useState({ username: "", email: "", password: "" });
   const [isRegistering, setIsRegistering] = useState(false);
   const [message, setMessage] = useState("");
+  const [isSuccess, setIsSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
@@ -21,9 +22,11 @@ function AuthForm({ onLogin }) {
         const res = await registerUser(form);
         if (res.username) {
           setMessage("Registered successfully. You can now login.");
+          setIsSuccess(true);
           setIsRegistering(false);
         } else {
           setMessage("Registration failed.");
+          setIsSuccess(false);
         }
       } else {
         const res = await loginUser({
@@ -35,14 +38,17 @@ function AuthForm({ onLogin }) {
           localStorage.setItem("accessToken", res.access);
           localStorage.setItem("refreshToken", res.refresh);
           setMessage("Login successful!");
+          setIsSuccess(true);
           if (onLogin) onLogin();
         } else {
           setMessage("Invalid login credentials.");
+          setIsSuccess(false);
         }
       }
     } catch (err) {
       console.error("Auth error:", err.message);
-      setMessage(" An error occurred.");
+      setMessage("An error occurred.");
+      setIsSuccess(false);
     } finally {
       setLoading(false);
     }
@@ -53,7 +59,7 @@ function AuthForm({ onLogin }) {
       {/* Left Side */}
       <div className="hidden md:flex w-1/2 bg-gradient-to-br from-indigo-100 to-indigo-300 items-center justify-center p-10">
         <div className="max-w-md text-indigo-800">
-          <h2 className="text-3xl font-bold mb-4">Welcome to Expense Tracker </h2>
+          <h2 className="text-3xl font-bold mb-4">Welcome to Expense Tracker</h2>
           <p className="text-lg mb-4">
             Track, analyze, and manage your expenses in real-time. Generate monthly reports, attach receipts, and take control of your spending like a pro!
           </p>
@@ -129,7 +135,7 @@ function AuthForm({ onLogin }) {
             {message && (
               <p
                 className={`text-center text-sm ${
-                  message.includes("✅") ? "text-green-600" : "text-red-600"
+                  isSuccess ? "text-green-600" : "text-red-600"
                 }`}
               >
                 {message}

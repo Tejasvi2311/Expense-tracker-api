@@ -10,6 +10,7 @@ function AddExpenseForm({ onAdd }) {
   });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [isSuccess, setIsSuccess] = useState(false); // ✅ New state
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -35,12 +36,13 @@ function AddExpenseForm({ onAdd }) {
         formData.append("receipt", form.receipt);
       }
 
-       for (let pair of formData.entries()) {
-      console.log(pair[0] + ':', pair[1]);  //Log every key/value
-    }
+      for (let pair of formData.entries()) {
+        console.log(pair[0] + ":", pair[1]);
+      }
 
       await addExpense(formData, token);
-      setMessage("Expense added!");
+      setMessage("Expense added successfully!");
+      setIsSuccess(true); // ✅ Success message
       setForm({
         amount: "",
         category: "UTILITIES",
@@ -52,6 +54,7 @@ function AddExpenseForm({ onAdd }) {
     } catch (err) {
       console.error("Error adding expense:", err.message);
       setMessage("Failed to add expense.");
+      setIsSuccess(false); // ❌ Failure
     } finally {
       setLoading(false);
     }
@@ -109,28 +112,21 @@ function AddExpenseForm({ onAdd }) {
         className="w-full px-4 py-2 mb-3 border rounded"
       />
 
-
-
       <button
         type="submit"
         disabled={loading}
         className="px-4 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 hover:shadow-lg transform transition-transform duration-200 hover:-translate-y-0.5"
-
       >
         {loading ? "Adding..." : "Add Expense"}
       </button>
 
       {message && (
-        <p
-          className={`mt-2 text-sm ${
-            message.includes("✅") ? "text-green-600" : "text-red-600"
-          }`}
-        >
+        <p className={`mt-2 text-sm ${isSuccess ? "text-green-600" : "text-red-600"}`}>
           {message}
         </p>
       )}
     </form>
-  );
+  )
 }
 
 export default AddExpenseForm;

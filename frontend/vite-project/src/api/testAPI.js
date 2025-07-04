@@ -37,8 +37,8 @@ export async function refreshToken(refreshToken) {
 }
 
 // ---------------------- GET EXPENSES ----------------------
-export async function getExpenses(token) {
-  const res = await fetch(`${BASE_URL}/expenses/`, {
+export async function getExpenses(token,url = "/expenses/") {
+  const res = await fetch(`${BASE_URL}${url}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
