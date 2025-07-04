@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'expenses',
     'django_filters',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -51,6 +52,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
 ]
 
 ROOT_URLCONF = "core.urls"
@@ -98,7 +101,7 @@ else:
             'NAME': os.getenv('MYSQL_DATABASE'),
             'USER': os.getenv('MYSQL_USER'),
             'PASSWORD': os.getenv('MYSQL_PASSWORD'),
-            'HOST': os.getenv('MYSQL_HOST', 'localhost'),
+            'HOST': os.getenv('MYSQL_HOST', 'db'),
             'PORT': '3306',
         }
     }
@@ -153,7 +156,17 @@ REST_FRAMEWORK={
     'DEFAULT_FILTER_BACKENDS':['django_filters.rest_framework.DjangoFilterBackend'],
     'DEFAULT_PAGINATION_CLASS':'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE':40,
+    'DEFAULT_PARSER_CLASSES':(
+        'rest_framework.parsers.JSONParser',
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser',
+    ),
 }
 
 MEDIA_URL='/media/'
 MEDIA_ROOT=os.path.join(BASE_DIR,'media')
+
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:5173',
+]

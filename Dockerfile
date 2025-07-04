@@ -8,9 +8,15 @@ ENV PYTHONUNBUFFERED 1
 # Set working directory
 WORKDIR /app
 
-# Install system dependencies for mysqlclient
+# Install system dependencies including mysqladmin
 RUN apt-get update \
-    && apt-get install -y gcc default-libmysqlclient-dev pkg-config build-essential \
+    && apt-get install -y \
+        gcc \
+        libmagic-dev \
+        default-libmysqlclient-dev \
+        pkg-config \
+        build-essential \
+        default-mysql-client \
     && apt-get clean
 
 # Install Python dependencies
