@@ -1,9 +1,10 @@
-name: Django CI
+name: Full Stack CI
 
 on: [push, pull_request]
 
 jobs:
-  test:
+  backend:
+    name: Django Backend CI
     runs-on: ubuntu-latest
 
     services:
@@ -48,7 +49,25 @@ jobs:
         run: |
           python manage.py test
 
-      # - name: Run Linting
-      #   run: |
-      #     flake8
-      #     black --check
+  frontend:
+    name: Frontend Build Test
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: frontend/vite-project
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build frontend
+        run: npm run build
