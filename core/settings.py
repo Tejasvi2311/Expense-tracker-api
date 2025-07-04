@@ -86,7 +86,7 @@ if os.getenv("GITHUB_WORKFLOW"):
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'expenses_db',
+            'NAME': 'expense_db',
             'USER': 'root',
             'PASSWORD': 'root',
             'HOST': '127.0.0.1',  # VERY important in GitHub Actions
